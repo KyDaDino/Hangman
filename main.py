@@ -323,6 +323,78 @@ myDict = {
          
          
     _____""",
+    " " : """
+         
+         
+         
+         
+         """,
+    "0" : """
+     ### 
+    #   #
+    #   #
+    #   #
+     ### """,
+    "1" : """
+      #  
+     ##  
+      #  
+      #  
+     ### """,
+    "2" : """
+     ### 
+    #   #
+      ## 
+     #   
+    #####""",
+    "3" : """
+     ### 
+    #   #
+      ## 
+    #   #
+     ### """,
+    "4" : """
+    #  # 
+    #  # 
+    #####
+       # 
+       # """,
+    "5" : """
+    #####
+    # 
+    ####
+        #
+    #### """,
+    "6" : """
+     ### 
+    #    
+    #### 
+    #   #
+     ### """,
+    "7" : """
+    #####
+       # 
+      #  
+     #   
+     #   """,
+    "8" : """
+     ### 
+    #   #
+     ### 
+    #   #
+     ### """,
+    "9" : """
+     ### 
+    #   #
+     ####
+        #
+     ### """,
+    "'" : """
+      #  
+      #  
+     #   
+         
+         """
 }
 
 def hangman(lives):
@@ -472,20 +544,27 @@ def main():
     wordsGuessed = []
     if wordGuessed == "":
         wordGuessed = "_" * wordLength
+    for i in (range(len(word))):
+        if word[i] == " ":
+            wordGuessed = wordGuessed[:i] + " " + wordGuessed[i+1:]
+        if word[i] == "'":
+            wordGuessed = wordGuessed[:i] + "'" + wordGuessed[i+1:]
     while wordGuessed != word:
         validity = 0
         print("\n")
-        for row in range(6):
-            for letter in wordGuessed:
-                print(myDict[letter].splitlines()[row], end=" ")
-            print("")
+        for part in wordGuessed.split():      
+            for row in range(6):              
+                for letter in part:
+                    print(myDict[letter].splitlines()[row], end=" ")
+                print()                       
+            print()  
         print("\n")
         hangman(lives)
         if firstCheck >0:
             print(f"Letters Guessed: {sorted(lettersGuessed)}")
             print(f"Words Guessed: {sorted(wordsGuessed)}")
         else: firstCheck += 1
-        guess = input("What is your next guess? (Please enter a single letter, or a word the same length as the hidden word)")
+        guess = input("What is your next guess? (Please enter a single letter, number, or a word(s) the same length as the hidden word(s))")
         if guess in lettersGuessed:
             print(f"You have already guessed {guess}. Try again!")
         elif guess in wordsGuessed:
@@ -494,7 +573,7 @@ def main():
             if len(guess) == 1:
                 for i in range(len(word)):
                     if word[i] == guess.lower():
-                        wordGuessed = wordGuessed[:i] + guess + wordGuessed [i+1:]
+                        wordGuessed = wordGuessed[:i] + guess + wordGuessed[i+1:]
                         validity = 1
                 lettersGuessed.append(guess)
                 if validity == 0:
@@ -510,12 +589,14 @@ def main():
                 print(f"The word was {word}. Better luck next time!")
                 break
             if wordGuessed == word:
-                for row in range(6):
-                    for letter in wordGuessed:
-                        print(myDict[letter].splitlines()[row], end=" ")
-                    print("")
+                for part in wordGuessed.split():      
+                    for row in range(6):              
+                        for letter in part:
+                            print(myDict[letter].splitlines()[row], end=" ")
+                        print()                       
+                    print()  
                 hangman(lives)
-                print("         YOU WIN!")
+                print("                   YOU WIN!\n")
 
 def getWord():
     with open("cubingInput.txt", "r") as wordList:
