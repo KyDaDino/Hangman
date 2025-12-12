@@ -518,7 +518,7 @@ def main():
                 print("         YOU WIN!")
 
 def getWord():
-    with open("oxford-5000.txt", "r") as wordList:
+    with open("cubingInput.txt", "r") as wordList:
         content = wordList.read()
         words = [w.strip() for w in content.split(",")]
         return random.choice(words)
